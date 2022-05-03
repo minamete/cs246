@@ -28,6 +28,7 @@ Skipping 2FA: the instructions for this can be found in LEARN. Make sure not to 
 - `man` lists what commands do, stands for manual.
 - `cat` is a concatenation command: add one thing to another thing. `cat [file]` means "add this file to the terminal", which dumps the contents of the file into the terminal. `cat > [file]` is output direction - the output of `cat` goes into `[file]`. Similarly, we have input direction with `cat < [file] > [file2]`.
 - `diff [file1] [file2]` shows the difference between `file1` and `file2`.
+- `head / tail` reads the # of lines from the top/bottom of a file.
 - `wc [file]` gives the word count in a format of `[lines] [words] [characters] [filename]`. 
     - `wc -l [file]` gives *just* the line counts. Similarly, you can also count just the words and just the characters.
 - `tldr` too long, didn't read - shorter. Not available on the student servers.
