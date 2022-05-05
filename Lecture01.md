@@ -15,7 +15,7 @@ Assignment 0 - no grades, only to get comfortable with the environment (how to c
 
 In general: type in ```ssh userid@linux.student.cs.uwaterloo.ca``` to the terminal to SSH to CS servers. You can do ```ssh -Y userid@linux.student.cs.uwaterloo.ca``` when working with GUI applications to enable X11 forwarding.
 
-[Useful resource for shell commands](explainshell.com)
+[Useful resource for shell commands](https://explainshell.com)
 
 Windows 10: start powershell terminal, type ```ssh userid@linux.student.cs.uwaterloo.ca```. You should see a different user from your windows machine username. Windows users can also use PuTTY or MobaXterm. The setting for enabling S11 in PuTTy can be found under Connection->SSH->S11.
 
