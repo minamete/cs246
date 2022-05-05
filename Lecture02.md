@@ -9,7 +9,7 @@
 - `sort` sorts everything in the file line-by-line.
 - `uniq` displays unique lines only.
 - Variables can be denoted with `$`. For example: `echo "$(whoami)"` and `echo "$(date)"`.
-    - `var = 1`
+    - `var=1`
     `echo $var` prints `1`.
 - `egrep` is equivalent to `grep -E`, and allows for searching via either text matches or regular expression matches.
 - `la` is equivalent to `ls -A` and `ll` is equivalent to `ls -l`.
