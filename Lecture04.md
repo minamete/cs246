@@ -19,7 +19,7 @@
     - `-lt` less than
     - `-le` less than/equal to
     - Comparing strings: `if [[ "aaa" < "bbb" ]]`
-    - `if [ -w file/directory ]` (if write perms), `if [ -r file/directory ]` (if read perms), `if [ -e file/directory ]` (if exists), `if [ -d file/directory ]` (if directory), `if [ -s file/directory ]` (if executable perms)
+    - `if [ -w file/directory ]` (if write perms), `if [ -r file/directory ]` (if read perms), `if [ -e file/directory ]` (if exists), `if [ -d file/directory ]` (if directory), `if [ -x file/directory ]` (if executable perms)
         - If the file doesn't exist, the permissions will be false
         - These check permissions for the user executing the code
 
