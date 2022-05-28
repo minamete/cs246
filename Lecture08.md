@@ -157,7 +157,9 @@ You can also have variables in makefiles. They reduce clutter and generalize som
 ## Dependencies:
 ```
 {EXEC}: ${OBJECTS} -o ${EXEC}
+```
 -include ${DEPENDS}
+```
 main.o: main.cc vec.h # now can omit recipe
 #${CXX} ${CXXFLAGS} -c file.cc
 vec.o: vec.cc vec.h
