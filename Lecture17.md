@@ -107,3 +107,122 @@ This makes `Student::fees()` a **pure virtual** method, which is a method that d
 Student s; // error: Student is abstract
 ```
 The purpose of abstract classes is to define common interfaces and organize subclasses. Subclasses of an abstract class are also abstract unless they implement all pure virtual methods. Non-abstract classes are called **concrete**. In UML, visualize abstract classes and pure virtual methods by italicizing their names.
+
+## Templates
+Huge topic, we're just going to learn some highlights.
+```
+class List {
+    struct Node;
+    Node *theList;
+    ...
+};
+```
+What if we want to store something other than `int`s in our `List`? A **template class** is a class parameterized by a type. 
+```
+template <typename T> // T can be anything you want, it's a variable name
+class Stack {
+    int size;
+    int cap;
+    T * contents; // instead of an int pointer, it will be a pointer of (unknown, arbitrary) type T
+    public: 
+        Stack() {...}
+        void push(T X) {...}
+        T top() {...}
+        void pop() {...}
+};
+```
+We rewrite `List` as a template class:
+```
+template <typename T>
+class List {
+    struct Node {
+        T data;
+        Node *next;
+    };
+    Node *theList;
+    public:
+        class Iterator {
+            Node *p;
+            ...
+            public:
+                ...
+                T &operator*() {
+                    return p->data; // doesn't matter that p->data is a T now
+                }
+                ...
+        };
+        void addToFront(T x) {
+            theList = new Node{X, theList};
+        }
+}
+```
+Usage:
+```
+List<int> l1;
+List<int> l2;
+List<List<int>> l3;
+l1.addToFront(3);
+l3.addToFront(l1);
+
+for(List<List<int>>::Iterator it = l3.begin(); it != l3.end; ++it) {
+    for(auto n: *it) {
+        cout << n << " ";
+    }
+    cout << endl;
+}
+```
+How do templates work? Roughly speaking: the compiler sees each instantiation of the class (e.g. `List<int>` or `List<List<int>>`) and generates specialized classes for each type declared. You have to declare templates in the header file!
+
+Restriction on what type(s) T can be are set by you, depending on how you use T. This is called `duck-typing`: if it walks like a duck, and it quacks like a duck, then it's a duck.
+
+## The Standard Template Library
+\*Technically called the "C++ standard template library"
+
+The standard template library is a large collection of useful templates. For example, it includes dynamic-length arrays (vectors):
+```
+#include <vector>
+using namespace std; 
+...
+// Difference between {} and ()
+vector<int> v{4,5}; // vector containing (4, 5)
+vector<int> w(4,5); // vector containing 4 5s (5, 5, 5, 5)
+v.emplace_back(6); // v = (4, 5, 6); more efficient than push_back
+v.emplace_back(7); // v = (4, 5, 6, 7)
+
+// There is really no reason to use push_back instead of emplace_back in modern C++.
+vector<Book> b;
+b.push_back(Book{"A", "author", 75}); // constructs a temporary book and moves it into the back of the vector
+b.emplace_back("A", "author", 75); // constructs the object directly in the back of the vector
+```
+Never try to use an array of objects polymorphically, because it will get sliced into the base class. You *can*, however, use an array of *pointers* polymorphically. 
+
+`vector` doesn't know to delete parts of your array. If you have a `vector` of pointers, you have to manually `delete` them. `vector` also has built-in support for iterators. In fact, almost all STL containers have iterators!
+
+Looping over vector:
+```
+for (int i = 0; i < v.size(); ++i) {
+    cout << v[i] << endl; 
+}
+```
+As we just observed, vectors also support the iterator abstraction!
+```
+for(vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
+    cout << *it << endl; 
+}
+```
+or indeed
+``` 
+for(auto n: v) { cout << n << endl; }
+```
+To iterate in reverse (we can use `auto` in the typename still):
+```
+for(vector<int>::reverse_iterator it=v.rbegin(); it != rend(); ++it) {
+    ...
+}
+v.pop_back() // removes the last element of v
+```
+Vectors are guaranteed to be implemented as arrays internally. Now that you know about vectors, you should use them whenever you need a dynamic-length array. i.e. you shouldn't need to use the array forms of `new` and `delete`.
+
+Many other vector operators are based on iterators. e.g. `erase` method, which takes an iterator to be the element you want to remove.
+
+Caution: iterators store pointers. `vector` automatically reallocates if it goes out of range. Reallocation can invalidate old iterators.
