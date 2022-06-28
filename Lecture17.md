@@ -42,13 +42,13 @@ class X {
     public: 
     x (int n) : x {new int {n}} {}
     ~x() {delete x;}
-}
+};
 class Y: public X {
     int * y;
     public: 
     Y(int m, int n) : X{n}, Y{new int[m]} {}
     ~Y() {delete y;}
-}
+};
 ```
 There are 4 phases to object construction. There are also 4 for destruction.
 ```
@@ -58,6 +58,52 @@ delete myX; // PROBLEM!!
 ```
 We're using a base class pointer and the destructor is not virtual. So the compiler runs the base class destructor instead. We need to make the destructor virtual. 
 
-When the destructor is not virtual, this code only calls X::~X(); if it is virtual, then Y::~X() is called as part of destroying that Y. Its superclass component gets destroyed and X's destructor runs as well. 
+When the destructor is not virtual, this code only calls `X::~X()`; if it is virtual, then `Y::~X()` is called as part of destroying that Y. Its superclass component gets destroyed and X's destructor runs as well. 
 
 If you have inheritance, your destructor should *always* be virtual. Even if the base class doesn't have resources to manage, the derived classes later might. If you *don't* have inheritance, don't make a virtual destructor (it is wasteful because virtual functions use an additional pointer).
+```
+class Student {
+    ...
+    protected:
+        int numCourses;
+    public:
+        virtual int fees() const;
+        ...
+};
+```
+There are two kinds of Students: regular and coop.
+```
+class Regular: public Student {
+    ...
+    public: 
+        int fees() const override; // code to compute fees 
+                                   // for regular students
+};
+
+class Coop: public Student {
+    ...
+    public: 
+        int fees() const override; 
+        // code to compute fees for coop students
+}
+```
+BUT: what should we put for `Student::fees()`?
+- Nothing? But we can't put nothing, then the function won't link!
+We're not sure: every student should be regular or coop, there should be no `Student` objects.
+
+Answer: In the student class, we write
+```
+class Student {
+    ...
+    protected:
+        int numCourses;
+    public:
+        virtual int fees() const = 0;
+        ...
+};
+```
+This makes `Student::fees()` a **pure virtual** method, which is a method that does not require an implementation. A class with a pure virtual method is called **abstract** and cannot be instantiated. This is exactly what we want, as there should be no pure `Student` objects.
+```
+Student s; // error: Student is abstract
+```
+The purpose of abstract classes is to define common interfaces and organize subclasses. Subclasses of an abstract class are also abstract unless they implement all pure virtual methods. Non-abstract classes are called **concrete**. In UML, visualize abstract classes and pure virtual methods by italicizing their names.
