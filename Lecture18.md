@@ -8,7 +8,7 @@ An example of this pattern in action would be in Excel spreadsheets, where the "
 
 The whole point of this pattern is to abstract change. There can be many different types of observer classes, and the subject should not need to know the details of all of them. 
 
-![Observer Pattern UML diagram](./lecture18-uml/observer_uml.jpg)
+![Observer Pattern UML diagram](./Lecture18-uml/observer_uml.jpg)
 
 Note: Just knowing you're watching a cell isn't enough; you need to know *exactly* what you're watching.
 
